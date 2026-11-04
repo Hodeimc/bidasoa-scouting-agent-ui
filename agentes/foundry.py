@@ -13,6 +13,7 @@ import os
 import re
 
 from azure.ai.projects import AIProjectClient
+from azure.core.exceptions import ClientAuthenticationError
 from azure.identity import DefaultAzureCredential
 
 from .base import Actividad, Agente, Aprobacion, Decision, Respuesta
@@ -46,8 +47,25 @@ class AgenteFoundry(Agente):
         return self.agent_name
 
     # --- Conversación ---
+    @staticmethod
+    def _es_error_de_credenciales(e):
+        """True si la excepción (o alguna de su cadena) viene de no tener credenciales de Azure."""
+        while e is not None:
+            if isinstance(e, ClientAuthenticationError) or "DefaultAzureCredential" in str(e):
+                return True
+            e = e.__cause__ or e.__context__
+        return False
+
     def nueva_conversacion(self):
-        conv_id = self.client.conversations.create().id
+        try:
+            conv_id = self.client.conversations.create().id
+        except Exception as e:
+            if self._es_error_de_credenciales(e):
+                raise RuntimeError(
+                    "No hay sesión de Azure. Ejecuta `az login --use-device-code` en la terminal "
+                    "(o define un service principal) y recarga la página."
+                ) from e
+            raise
         self._estado[conv_id] = {"containers": [], "descargados": set()}
         return conv_id
 

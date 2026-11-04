@@ -1,26 +1,21 @@
 {
   "name": "Agente Streamlit (Bidasoa FC · Scouting)",
   "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/azure-cli:1": {}
+  },
   "secrets": {
     "PROJECT_ENDPOINT": {
       "description": "Endpoint del proyecto de Microsoft Foundry (https://<recurso>.services.ai.azure.com/api/projects/<proyecto>)"
     },
     "AGENT_NAME": {
       "description": "Nombre del agente en Foundry (p. ej. bidasoa-scouting-agent)"
-    },
-    "AZURE_CLIENT_ID": {
-      "description": "appId del service principal con rol 'Azure AI User' sobre el proyecto"
-    },
-    "AZURE_TENANT_ID": {
-      "description": "Tenant de Azure del service principal"
-    },
-    "AZURE_CLIENT_SECRET": {
-      "description": "Secreto (password) del service principal"
     }
   },
   "postCreateCommand": "pip install --user -r requirements.txt",
   "postAttachCommand": {
-    "app": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false"
+    "app": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false",
+    "aviso": "echo '\\n👉 Para conectar con el agente: az login --use-device-code  (y recarga la app)\\n'"
   },
   "forwardPorts": [8501],
   "portsAttributes": {

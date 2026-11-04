@@ -12,19 +12,25 @@ Interfaz web genérica para conversar con un agente de IA, configurada aquí par
 
 ## Probarlo en GitHub Codespaces
 
-1. Pulsa el botón **Open in GitHub Codespaces** o ve a **Code → Codespaces → Create codespace**.
-2. En la pantalla de creación, GitHub pide estos **secretos**. Si el dueño del repo ya los configuró, aparecen rellenos:
+Cada persona entra con **su propia cuenta de Azure**. No hay contraseñas compartidas ni secretos de Azure en el repositorio. Requisito: el dueño del proyecto de Foundry tiene que haberte dado acceso (ver más abajo).
 
-   | Secreto | Qué es |
+1. Pulsa el botón **Open in GitHub Codespaces** o ve a **Code → Codespaces → Create codespace**.
+2. En la pantalla de creación, GitHub pide dos valores (te los pasa el dueño del proyecto):
+
+   | Valor | Qué es |
    |---|---|
    | `PROJECT_ENDPOINT` | Endpoint del proyecto de Foundry |
    | `AGENT_NAME` | Nombre del agente (`bidasoa-scouting-agent`) |
-   | `AZURE_CLIENT_ID` | appId del service principal |
-   | `AZURE_TENANT_ID` | Tenant de Azure |
-   | `AZURE_CLIENT_SECRET` | Secreto del service principal |
 
-3. Espera a que termine la instalación (`pip install -r requirements.txt`). La app se arranca sola y se abre en una pestaña de vista previa (puerto **8501**). Si no se abre, ve a la pestaña **Ports** y abre el 8501.
-4. Prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
+3. Espera a que termine la instalación. La app arranca sola en el puerto **8501**, pero hasta que inicies sesión mostrará un aviso de "No hay sesión de Azure".
+4. En la **terminal** del Codespace, inicia sesión en Azure:
+
+   ```bash
+   az login --use-device-code
+   ```
+
+   Abre el enlace que aparece, pega el código e inicia sesión con tu cuenta. Si tu cuenta tiene varios tenants, añade `--tenant <tenant-del-proyecto>`.
+5. **Recarga la página de la app** (pestaña **Ports** → puerto 8501 si no está abierta) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
 
 Para relanzar la app a mano:
 
@@ -32,33 +38,21 @@ Para relanzar la app a mano:
 streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false
 ```
 
-### Preparar el acceso (solo el dueño del proyecto de Azure)
+### Dar acceso a una persona (solo el dueño del proyecto de Azure)
 
-La app se autentica con `DefaultAzureCredential`. En Codespaces no hay `az login`, así que se usa un **service principal** con permiso solo sobre el proyecto de Foundry:
-
-```bash
-# 1. Crear el service principal (devuelve appId, password y tenant)
-az ad sp create-for-rbac --name bidasoa-codespaces
-
-# 2. Darle acceso solo al proyecto de Foundry
-az role assignment create --assignee <appId> --role "Azure AI User" \
-  --scope <id-del-recurso-del-proyecto-foundry>
-```
-
-Después guarda los valores como secretos de Codespaces del repositorio, en **Settings → Secrets and variables → Codespaces**, o con:
+Asigna a su cuenta el rol **Azure AI User** limitado al proyecto de Foundry:
 
 ```bash
-gh secret set AZURE_CLIENT_ID --app codespaces
-gh secret set AZURE_TENANT_ID --app codespaces
-gh secret set AZURE_CLIENT_SECRET --app codespaces
-gh secret set PROJECT_ENDPOINT --app codespaces
-gh secret set AGENT_NAME --app codespaces
+# ID del proyecto: id del recurso de Foundry + /projects/<nombre-del-proyecto>
+az cognitiveservices account list --query "[].{nombre:name, id:id}" -o table
+
+az role assignment create --assignee <correo-de-la-persona> --role "Azure AI User" \
+  --scope "<id-del-recurso>/projects/<nombre-del-proyecto>"
 ```
 
-> ⚠️ **Seguridad:** cualquiera que abra un Codespace con estos secretos puede leerlos desde la terminal. Por eso conviene:
-> - usar un repositorio **privado** e invitar solo a quien deba probarlo;
-> - dar al service principal el rol mínimo (Azure AI User) limitado al proyecto;
-> - rotar o borrar el secreto cuando terminen las pruebas (`az ad sp credential reset` / `az ad sp delete`).
+Para quitarle el acceso: `az role assignment delete --assignee <correo> --role "Azure AI User" --scope "<mismo-scope>"`.
+
+> Alternativa sin login: un *service principal*. Define `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` y `AZURE_CLIENT_SECRET` como secretos de Codespaces y `DefaultAzureCredential` los usará en lugar de `az login`. Ojo: quien abra el Codespace podrá leer ese secreto.
 
 ## Ejecutar en local
 

@@ -18,7 +18,9 @@ Interfaz web en Streamlit **genérica**: el código no sabe nada del caso de uso
 - Git: `.env`, `salidas/` y `__pycache__/` están en `.gitignore`. Hacer commits/push solo si el usuario lo pide, y nunca subir `.env` ni secretos.
 
 ## GitHub Codespaces
-- Autenticación por service principal: secretos de Codespaces `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`, más `PROJECT_ENDPOINT` y `AGENT_NAME`. `DefaultAzureCredential` los lee sin cambios de código.
+- Autenticación: cada persona hace `az login --use-device-code` en la terminal del Codespace (la Azure CLI viene en el devcontainer) y recarga la app. Necesita el rol **Azure AI User** sobre el proyecto de Foundry, que le asigna el dueño. Los únicos secretos de Codespaces son `PROJECT_ENDPOINT` y `AGENT_NAME`.
+- Alternativa opcional: service principal (`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`); `DefaultAzureCredential` lo usa sin cambios de código.
+- Sin sesión, el conector Foundry muestra "No hay sesión de Azure…" en la página. El cliente no cachea el fallo, así que basta con recargar tras el login.
 - Arranque en Codespaces: `streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false` (lo hace `postAttachCommand`).
 - Si se añaden variables de entorno nuevas, declararlas también en `secrets` de `devcontainer.json`, en `env.example` y en el README.
 
