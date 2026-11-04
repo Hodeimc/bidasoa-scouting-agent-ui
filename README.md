@@ -16,9 +16,18 @@ No hay que configurar nada: el endpoint y el agente ya están en `config.toml`. 
 
 1. Pulsa el botón **Open in GitHub Codespaces** (o **Code → Codespaces → Create codespace**) y espera a que termine la instalación (2-3 minutos la primera vez).
 2. En la **terminal** aparece automáticamente un recuadro *"🔐 Inicia sesión en Azure"* con un enlace y un código. Abre el enlace, escribe el código e inicia sesión con tu cuenta.
-3. **Recarga la app** (se abre sola en una pestaña nueva del navegador; si no, pestaña **Ports** → puerto **8501** → icono 🌐) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
+3. **Recarga la app** (se abre sola en una pestaña nueva del navegador; si no, pestaña **Puertos** (*Ports*) → puerto **8501** → icono 🌐) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
 
-Si cerraste la terminal o el código caducó: `bash .devcontainer/login-azure.sh`. Si tu cuenta tiene varios tenants: `az login --use-device-code --tenant <tenant-del-proyecto>`.
+### Problemas frecuentes
+
+| Qué pasa | Solución |
+|---|---|
+| La app dice *"No hay sesión de Azure"* | Inicia sesión en la terminal (`bash .devcontainer/login-azure.sh`) y recarga la página. |
+| El código de login caducó o cerraste esa terminal | Vuelve a ejecutar `bash .devcontainer/login-azure.sh`. |
+| Tu cuenta tiene varios tenants | `az login --use-device-code --tenant <tenant-del-proyecto>` |
+| Error **401/403** al hacer una consulta | Tu cuenta no tiene permiso para llamar a los agentes del proyecto. Ser *Owner* del recurso no basta: hace falta un rol de datos como **Azure AI User** sobre el proyecto (ver abajo). Tarda unos minutos en aplicarse. |
+| La vista previa integrada dice *"ha rechazado la conexión"* | Abre la app en una pestaña normal: icono ↗ de la vista previa, o **Puertos** → 8501 → 🌐. |
+| Las direcciones *Network URL* / *External URL* de la terminal no cargan | Es normal: son internas del Codespace. Usa el enlace `localhost:8501` o la pestaña **Puertos**. |
 
 Para relanzar la app a mano:
 
@@ -48,12 +57,18 @@ Para quitarle el acceso: `az role assignment delete --assignee <correo> --role "
 
 ```bash
 pip install -r requirements.txt
-cp env.example .env          # y rellena PROJECT_ENDPOINT y AGENT_NAME
 az login                     # o define las variables AZURE_* de un service principal
 streamlit run app.py         # http://localhost:8501
 ```
 
-`cliente.py` es el cliente de terminal de referencia: `python cliente.py`.
+La app no necesita `.env`: lee el endpoint y el agente de `config.toml`.
+
+`cliente.py` es el cliente de terminal de referencia y sí lee las variables de entorno:
+
+```bash
+cp env.example .env          # ya trae el endpoint y el agente de este proyecto
+python cliente.py
+```
 
 ## Reutilizarlo con otro agente o tema
 
