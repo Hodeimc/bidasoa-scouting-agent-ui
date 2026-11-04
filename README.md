@@ -5,7 +5,7 @@
 Interfaz web genérica para conversar con un agente de IA, configurada aquí para el agente de scouting **bidasoa-scouting-agent** de Microsoft Foundry. Incluye:
 
 - Chat con historial y consultas rápidas.
-- Aprobación humana de las acciones del agente en servidores MCP (p. ej. crear issues en GitHub).
+- Aprobación humana de las solicitudes MCP que configure el agente (en este agente, la aprobación se pide al conectarse a su toolbox de Foundry).
 - Registro de las herramientas usadas en cada respuesta.
 - Radares interactivos (plotly) que el agente devuelve como bloque ```` ```radar ````.
 

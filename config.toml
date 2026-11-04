@@ -97,6 +97,7 @@ agent_name = "bidasoa-scouting-agent"
 
 [agente.servidores]            # nombre interno del servidor MCP -> nombre legible
 github = "GitHub"
+bidasoa-scouting-agent-toolbox-bst5 = "Toolbox del agente (GitHub · Code Interpreter)"
 
 [agente.iconos]                # iconos del registro de actividad por tipo de herramienta
 mcp = "🐙"
