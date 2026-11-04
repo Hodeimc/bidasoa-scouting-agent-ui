@@ -1,5 +1,7 @@
 # Agente de chat con Streamlit · Bidasoa FC Scouting
 
+> **Probarlo sin instalar nada:** el código también está en https://github.com/Hodeimc/bidasoa-scouting-agent-ui. Pulsa *Open in GitHub Codespaces*, inicia sesión en Azure cuando lo pida la terminal y la app se abre en el navegador.
+
 Interfaz web genérica para conversar con un agente de IA, configurada aquí para el agente de scouting **bidasoa-scouting-agent** de Microsoft Foundry. Incluye:
 
 - Chat con historial y consultas rápidas.
