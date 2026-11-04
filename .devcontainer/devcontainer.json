@@ -13,7 +13,7 @@
   "portsAttributes": {
     "8501": {
       "label": "App Streamlit",
-      "onAutoForward": "openPreview"
+      "onAutoForward": "openBrowser"
     }
   },
   "customizations": {

@@ -16,7 +16,7 @@ No hay que configurar nada: el endpoint y el agente ya están en `config.toml`. 
 
 1. Pulsa el botón **Open in GitHub Codespaces** (o **Code → Codespaces → Create codespace**) y espera a que termine la instalación (2-3 minutos la primera vez).
 2. En la **terminal** aparece automáticamente un recuadro *"🔐 Inicia sesión en Azure"* con un enlace y un código. Abre el enlace, escribe el código e inicia sesión con tu cuenta.
-3. **Recarga la app** (se abre sola en una pestaña de vista previa; si no, pestaña **Ports** → puerto **8501**) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
+3. **Recarga la app** (se abre sola en una pestaña nueva del navegador; si no, pestaña **Ports** → puerto **8501** → icono 🌐) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
 
 Si cerraste la terminal o el código caducó: `bash .devcontainer/login-azure.sh`. Si tu cuenta tiene varios tenants: `az login --use-device-code --tenant <tenant-del-proyecto>`.
 
