@@ -27,7 +27,7 @@ class AgenteFoundry(Agente):
 
     def __init__(self, ajustes, carpeta_salidas, log):
         super().__init__(ajustes, carpeta_salidas, log)
-        endpoint = os.environ.get("PROJECT_ENDPOINT")
+        endpoint = os.environ.get("PROJECT_ENDPOINT") or self.ajustes.get("project_endpoint")
         self.agent_name = os.environ.get("AGENT_NAME") or self.ajustes.get("agent_name")
         faltan = [n for n, v in (("PROJECT_ENDPOINT", endpoint), ("AGENT_NAME", self.agent_name)) if not v]
         if faltan:

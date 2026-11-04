@@ -90,6 +90,10 @@ prompt = "Resume en 5 puntos qué tiene que cumplir un jugador para que lo fiche
 # La variable de entorno AGENT_PROVIDER tiene prioridad sobre este valor.
 proveedor = "foundry"
 nombre_visible = "Foundry"     # aparece en "● Conectado a ..." y en los errores
+# Ajustes del conector Foundry (las variables PROJECT_ENDPOINT / AGENT_NAME del entorno tienen prioridad).
+# No son secretos: sin una cuenta de Azure con permiso sobre el proyecto no dan acceso.
+project_endpoint = "https://foundry-tecnun-resource.services.ai.azure.com/api/projects/foundry-tecnun-project"
+agent_name = "bidasoa-scouting-agent"
 
 [agente.servidores]            # nombre interno del servidor MCP -> nombre legible
 github = "GitHub"

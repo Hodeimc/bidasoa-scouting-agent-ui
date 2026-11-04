@@ -12,25 +12,13 @@ Interfaz web genérica para conversar con un agente de IA, configurada aquí par
 
 ## Probarlo en GitHub Codespaces
 
-Cada persona entra con **su propia cuenta de Azure**. No hay contraseñas compartidas ni secretos de Azure en el repositorio. Requisito: el dueño del proyecto de Foundry tiene que haberte dado acceso (ver más abajo).
+No hay que configurar nada: el endpoint y el agente ya están en `config.toml`. Solo hace falta iniciar sesión con una cuenta de Azure que tenga acceso al proyecto de Foundry.
 
-1. Pulsa el botón **Open in GitHub Codespaces** o ve a **Code → Codespaces → Create codespace**.
-2. En la pantalla de creación, GitHub pide dos valores (te los pasa el dueño del proyecto):
+1. Pulsa el botón **Open in GitHub Codespaces** (o **Code → Codespaces → Create codespace**) y espera a que termine la instalación (2-3 minutos la primera vez).
+2. En la **terminal** aparece automáticamente un recuadro *"🔐 Inicia sesión en Azure"* con un enlace y un código. Abre el enlace, escribe el código e inicia sesión con tu cuenta.
+3. **Recarga la app** (se abre sola en una pestaña de vista previa; si no, pestaña **Ports** → puerto **8501**) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
 
-   | Valor | Qué es |
-   |---|---|
-   | `PROJECT_ENDPOINT` | Endpoint del proyecto de Foundry |
-   | `AGENT_NAME` | Nombre del agente (`bidasoa-scouting-agent`) |
-
-3. Espera a que termine la instalación. La app arranca sola en el puerto **8501**, pero hasta que inicies sesión mostrará un aviso de "No hay sesión de Azure".
-4. En la **terminal** del Codespace, inicia sesión en Azure:
-
-   ```bash
-   az login --use-device-code
-   ```
-
-   Abre el enlace que aparece, pega el código e inicia sesión con tu cuenta. Si tu cuenta tiene varios tenants, añade `--tenant <tenant-del-proyecto>`.
-5. **Recarga la página de la app** (pestaña **Ports** → puerto 8501 si no está abierta) y prueba una consulta rápida, por ejemplo **📋 Requisitos de invierno**. El agente tarda entre 30 y 90 segundos.
+Si cerraste la terminal o el código caducó: `bash .devcontainer/login-azure.sh`. Si tu cuenta tiene varios tenants: `az login --use-device-code --tenant <tenant-del-proyecto>`.
 
 Para relanzar la app a mano:
 
@@ -52,6 +40,8 @@ az role assignment create --assignee <correo-de-la-persona> --role "Azure AI Use
 
 Para quitarle el acceso: `az role assignment delete --assignee <correo> --role "Azure AI User" --scope "<mismo-scope>"`.
 
+> Para usar otro proyecto o agente, cambia `project_endpoint` y `agent_name` en `config.toml`, o define las variables `PROJECT_ENDPOINT` / `AGENT_NAME`, que tienen prioridad.
+>
 > Alternativa sin login: un *service principal*. Define `AZURE_CLIENT_ID`, `AZURE_TENANT_ID` y `AZURE_CLIENT_SECRET` como secretos de Codespaces y `DefaultAzureCredential` los usará en lugar de `az login`. Ojo: quien abra el Codespace podrá leer ese secreto.
 
 ## Ejecutar en local

@@ -4,18 +4,10 @@
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {}
   },
-  "secrets": {
-    "PROJECT_ENDPOINT": {
-      "description": "Endpoint del proyecto de Microsoft Foundry (https://<recurso>.services.ai.azure.com/api/projects/<proyecto>)"
-    },
-    "AGENT_NAME": {
-      "description": "Nombre del agente en Foundry (p. ej. bidasoa-scouting-agent)"
-    }
-  },
   "postCreateCommand": "pip install --user -r requirements.txt",
   "postAttachCommand": {
     "app": "streamlit run app.py --server.enableCORS false --server.enableXsrfProtection false",
-    "aviso": "echo '\\n👉 Para conectar con el agente: az login --use-device-code  (y recarga la app)\\n'"
+    "login": "bash .devcontainer/login-azure.sh"
   },
   "forwardPorts": [8501],
   "portsAttributes": {
