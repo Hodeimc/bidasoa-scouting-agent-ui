@@ -1,0 +1,13 @@
+# Secretos
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Ficheros generados por el agente
+salidas/
+
+# Script de prueba local (contiene el endpoint real)
+test_agent.py

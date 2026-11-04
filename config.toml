@@ -1,0 +1,110 @@
+# Configuración de la app de chat con agente.
+# Todo lo específico del caso de uso (marca, textos, prompts, colores, proveedor)
+# vive aquí. Para reutilizar la app con otro agente/dominio, cambia este fichero
+# y, si hace falta, el conector en agentes/. Los secretos van en .env.
+
+[app]
+titulo_pestana = "Bidasoa FC · Scouting"
+icono = "⚽"
+avatar_agente = "⚽"
+avatar_usuario = "👤"
+texto_espera = "El agente está analizando…"
+placeholder = "Pregunta al agente de scouting…"
+carpeta_salidas = "salidas"
+logger = "bidasoa"
+
+[tipografia]
+titulos = "Montserrat"
+texto = "Inter"
+
+[colores]
+primario = "#123a5c"          # cabecera, barra lateral, cabeceras de tabla
+primario_claro = "#1b5383"
+primario_oscuro = "#0f3150"
+secundario = "#2e7d4f"        # botones y acentos
+secundario_hover = "#25653f"
+exito = "#4cd38a"             # indicador "conectado"
+aviso = "#e0a106"             # tarjetas de aprobación
+peligro = "#c0392b"           # rechazar / errores
+
+[marca]
+nombre = "Bidasoa FC"
+subtitulo = "Departamento de Scouting · Mercado de invierno 2027"
+etiqueta = "ASISTENTE IA · MICROSOFT FOUNDRY"
+subtitulo_lateral = "Scouting · Invierno 2027"
+logo_alt = "Escudo Bidasoa FC"
+# logo_fichero = "logo.svg"   # alternativa a logo_svg (ruta a un .svg/.png)
+logo_svg = '''
+<svg width="78" height="90" viewBox="0 0 78 90" xmlns="http://www.w3.org/2000/svg">
+  <path d="M39 2 L74 12 V44 C74 66 58 80 39 88 C20 80 4 66 4 44 V12 Z"
+        fill="#123a5c" stroke="#ffffff" stroke-width="3"/>
+  <path d="M39 9 L67 17 V44 C67 62 54 74 39 81 Z" fill="#2e7d4f"/>
+  <path d="M8 50 Q23 42 39 50 T70 50" fill="none" stroke="#ffffff" stroke-width="2.5" opacity=".85"/>
+  <path d="M8 58 Q23 50 39 58 T70 58" fill="none" stroke="#ffffff" stroke-width="2.5" opacity=".55"/>
+  <circle cx="39" cy="31" r="11" fill="#ffffff"/>
+  <path d="M39 23 l5 4 -2 6 h-6 l-2 -6 z" fill="#123a5c"/>
+  <text x="39" y="74" text-anchor="middle" font-family="Montserrat, sans-serif"
+        font-size="9" font-weight="700" fill="#ffffff">BFC</text>
+</svg>
+'''
+
+[bienvenida]
+titulo = "👋 Bienvenido al asistente de scouting"
+texto = "Pregunta en lenguaje natural o usa una consulta rápida del panel lateral."
+
+[[bienvenida.tarjetas]]
+icono = "📄"
+titulo = "Consulta la documentación"
+texto = "Plan deportivo, normas de fichajes y KPIs del club."
+
+[[bienvenida.tarjetas]]
+icono = "📊"
+titulo = "Analiza candidatos"
+texto = "Filtra candidatos.csv y genera radares comparativos."
+
+[[bienvenida.tarjetas]]
+icono = "🐙"
+titulo = "Abre issues en GitHub"
+texto = "Crea fichas de seguimiento, siempre con tu aprobación."
+
+[[consultas_rapidas]]
+icono = "🎯"
+titulo = "Posición prioritaria"
+descripcion = "Plan deportivo, radar top 3 e issues"
+prompt = "Según el plan deportivo, ¿qué posición es prioritaria? Analiza sus candidatos en candidatos.csv con las normas y KPIs del club, haz un radar del top 3 y abre issue para los de categoría A."
+
+[[consultas_rapidas]]
+icono = "🛡️"
+titulo = "Mediocentros defensivos"
+descripcion = "Plaza extracomunitaria y radar top 3"
+prompt = "Analiza los mediocentros defensivos de candidatos.csv con las normas del club. ¿Podemos usar la plaza de extracomunitario con alguno? Haz un radar del top 3 y abre issue para los de categoría A."
+
+[[consultas_rapidas]]
+icono = "📋"
+titulo = "Requisitos de invierno"
+descripcion = "5 claves y calendario de decisión"
+prompt = "Resume en 5 puntos qué tiene que cumplir un jugador para que lo fichemos este invierno y cuál es el calendario de decisión."
+
+[agente]
+# Clave registrada en agentes/__init__.py ("foundry") o ruta "modulo:Clase".
+# La variable de entorno AGENT_PROVIDER tiene prioridad sobre este valor.
+proveedor = "foundry"
+nombre_visible = "Foundry"     # aparece en "● Conectado a ..." y en los errores
+
+[agente.servidores]            # nombre interno del servidor MCP -> nombre legible
+github = "GitHub"
+
+[agente.iconos]                # iconos del registro de actividad por tipo de herramienta
+mcp = "🐙"
+listar = "📚"
+codigo = "🐍"
+busqueda = "🔎"
+otra = "🛠️"
+
+[graficos]
+# claves alternativas a "series" que puede usar el agente en el JSON del gráfico
+claves_series = ["jugadores"]
+paleta = ["#2e7d4f", "#3d7cb8", "#e0a106", "#c0392b", "#8e6bbf", "#17a2a2"]
+
+[graficos.bloques]             # etiqueta del bloque de código -> tipo (radar, barras)
+radar = "radar"
